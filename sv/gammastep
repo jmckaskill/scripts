@@ -1,0 +1,2 @@
+#!/bin/sh
+exec gammastep -l 40:-105 -t 5000:3000 -o

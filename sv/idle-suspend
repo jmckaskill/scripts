@@ -1,0 +1,4 @@
+#!/bin/sh
+exec swayidle -w \
+	timeout 300 '/bin/sv once /home/james/runit/service/swaylock' \
+	timeout 600 'doas zzz'

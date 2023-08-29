@@ -1,0 +1,2 @@
+#!/bin/sh
+exec swaylock -e -l -c 323232

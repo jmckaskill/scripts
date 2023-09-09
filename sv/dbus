@@ -1,0 +1,4 @@
+#!/bin/sh
+exec 2>&1
+install -d -m 700 /run/user/1000/dbus-1
+exec dbus-daemon --session --nofork --nopidfile --nosyslog --address=$DBUS_SESSION_BUS_ADDRESS --print-address

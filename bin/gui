@@ -1,26 +1,7 @@
 #!/bin/bash
-export XDG_RUNTIME_DIR=/run/user/1000/
-export QT_QPA_PLATFORM=wayland-egl
-export ELM_DISPLAY=wl
-export SDL_VIDEODRIVER=wayland
-export MOZ_ENABLE_WAYLAND=1
-export XDG_SESSION_TYPE=wayland
-export GDK_BACKEND=wayland
-export LANG=en_US.UTF-8
-export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/dbus-1/session_bus_socket"
-export SWAYSOCK="${XDG_RUNTIME_DIR}/sway.sock"
-export NO_AT_BRIDGE=1
-export WAYLAND_DISPLAY=wayland-1
-export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.sock"
-
-cd "$HOME"
-
-install -d -m 700 "${XDG_RUNTIME_DIR}"
-install -d -m 700 "${XDG_RUNTIME_DIR}/dbus-1"
-
-runsvdir "$SVDIR" > "$SVDIR/run.log" &
-unset WAYLAND_DISPLAY
-sway 2> $XDG_RUNTIME_DIR/sway.log
-kill -HUP '%?runsvdir'
-wait '%?runsvdir'
-
+export PATH=$HOME/bin:$PATH
+export SVDIR=$HOME/sv
+export SWAYSOCK=$XDG_RUNTIME_DIR/sway.sock
+export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/dbus.sock
+#exec dbus-run-session runsvdir $SVDIR &> $HOME/sv/log
+exec runsvdir $SVDIR &> $HOME/sv/log

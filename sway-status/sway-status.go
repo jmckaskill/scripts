@@ -36,7 +36,7 @@ func findWiFiInterface(w *wifi.Client, name string) (*wifi.Interface, error) {
 func main() {
 	wakeup := make(chan os.Signal)
 	signal.Notify(wakeup, syscall.SIGALRM)
-	tk := time.NewTicker(5 * time.Second)
+	tk := time.NewTicker(2 * time.Second)
 
 	d, err := dbus.ConnectSystemBus()
 	must(err)
@@ -107,17 +107,24 @@ func main() {
 			volstr = "muted"
 		}
 
-		bright, err := exec.Command("light").Output()
+		bright, err := exec.Command("brillo").Output()
 		must(err)
 		brightnum, err := strconv.ParseFloat(strings.TrimSpace(string(bright)), 32)
 		must(err)
 
-		tmstr := time.Now().Format("2006-01-02 15:04")
-		fmt.Printf("%s Brightness:%.0f Volume:%s Battery:(%s|%.0f%%|%s|%.1fW) %s\n",
+		tm := time.Now()
+		tmstr := tm.Format("2006-01-02 15:04")
+		_, week := tm.ISOWeek()
+		day := tm.Weekday()
+		if day == 0 {
+			day = 7
+		}
+		fmt.Printf("%s Brightness:%.0f Volume:%s Battery:(%s|%.0f%%|%s|%.1fW) %02d.%d %s\n",
 			wifiText,
 			brightnum,
 			volstr,
 			batState, batPercent, batTimeRemaining, powerRate,
+			week, day,
 			tmstr)
 
 		select {
